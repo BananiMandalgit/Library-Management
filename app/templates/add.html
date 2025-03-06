@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore Library</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-border);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+            gap: 5px;
+        }
+        
+        .form-group {
+            flex: 1 0 250px;
+            margin: 2vh;
+        }
+        
+        .form-group.full-width {
+            flex: 1 0 100%;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-border);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            border: 2px dashed var(--light-border);
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-input-container:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(74, 111, 165, 0.03);
+        }
+        
+        .file-input-label {
+            display: block;
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .file-input-help {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: rgb(235, 240, 236);
+            background-color: rgb(20, 212, 46);
+        }
+        
+        .btn-primary:hover {
+            background-color: rgb(59, 142, 70);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(42, 93, 169, 0.08);
+        }
+        
+        .categories-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .category-tag {
+            background-color: var(--light-bg);
+            border: 1px solid var(--light-border);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .remove-tag {
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s;
+        }
+        
+        .remove-tag:hover {
+            color: #f44336;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px auto;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+        }
+        
+        .footer {
+            background: #333;
+            color: rgb(17, 96, 222);
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+           
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1;
+        }
+        .fakeheader{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+   
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            height:20%
+        }
+        
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .text {
+            position: relative;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px 4px;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        .text::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .text:hover {
+            color: #3498db;
+        }
+        
+        .text:hover::after {
+            width: 100%;
+        }
+        
+        .auth-container {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .login, .signin {
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 0.5s forwards;
+            transition: all 0.3s ease;
+        }
+        
+        .login {
+            background-color: transparent;
+            color: #3498db;
+            border: 2px solid #3498db;
+        }
+        
+        .signin {
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .login:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .signin:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* For the active hover effect */
+        .text.active::after {
+            width: 100%;
+        }
+        
+        .active-indicator {
+            position: absolute;
+            height: 3px;
+            bottom: 0;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        /* Burger menu for mobile */
+        .burger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Mobile responsive styles */
+        @media screen and (max-width: 768px) {
+            .burger {
+                display: block;
+            }
+            
+            .nav-container {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: white;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                transition: right 0.5s ease;
+                padding-top: 60px;
+            }
+            
+            .nav-container.active {
+                right: 0;
+            }
+            
+            .text {
+                opacity: 0;
+                margin: 15px 0;
+            }
+            
+            .auth-container {
+                flex-direction: column;
+                margin-top: 20px;
+            }
+            
+            .header {
+                padding: 15px 20px;
+            }
+            
+            /* Burger animation for active state */
+            .toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .toggle .line2 {
+                opacity: 0;
+            }
+            
+            .toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">BookStore</div>
+        
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+        
+        <nav class="nav-container">
+            <div class="text"><a href="{% url 'front' %}" style="text-decoration: none;">Home</a></div>
+            <div class="text"><a href="{% url 'studentinfo' %}" style="text-decoration: none;">Student Information</a></div>
+            <div class="text active"><a href="{% url 'add' %}" style="text-decoration: none;">Add-Book</a></div>
+            <div class="text"><a href="{% url 'find' %}" style="text-decoration: none;">Find-book</a></div>
+            <div class="text"><a href="{% url 'book' %}" style="text-decoration: none;">Book In Stock</a></div>
+            <div class="text"><a href="{% url 'help' %}" style="text-decoration: none;">Help</a></div>
+            
+        </nav>
+        
+        <div class="auth-container">
+            <div class="login">
+                <a href=" {% url 'login' %} " style="text-decoration: none;">Login</a>
+            </div>
+            <div class="signin"><a href="{% url 'signup' %}" style="text-decoration: none;">SIGN-UP</a><i class="ri-user-fill"></i> </div>
+    </header>
+    <div id="fakeheader"></div>
+
+
+
+    <form id="addBookForm" method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group">
+                <label for="title">Book Title*</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="author">Author*</label>
+                <input type="text" id="author" name="author" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="isbn">ISBN</label>
+                <input type="text" id="isbn" name="isbn" placeholder="e.g., 978-3-16-148410-0">
+            </div>
+            
+            <div class="form-group">
+                <label for="in_stock">In_stock</label>
+                <input type="number" id="in_stock" name="in_stock">
+            </div>
+            <div class="form-group">
+                <label for="publishDate">Publish Date</label>
+                <input type="date" id="publishDate" name="publishDate">
+            </div>
+        </div>
+ 
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="language">Language</label>
+                <select id="language" name="language">
+                    <option value="English">English</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="French">French</option>
+                    <option value="German">German</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Other">Other</option required>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-Fiction">Non-Fiction</option>
+                    <option value="Science Fiction">Science Fiction</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Biography">Biography</option>
+                    <option value="History">History</option>
+                    <option value="Self-Help">Self-Help</option>
+                    <option value="Business">Business</option>
+                    <option value="Children">Children</option>
+                    <option value="Other">Other</option required>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group full-width">
+                <label for="description">Book Description</label>
+                <textarea id="description" name="description" placeholder="Enter a brief description of the book..."></textarea>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="pageCount">Page Count</label>
+                <input type="number" id="pageCount" name="pageCount" min="1">
+            </div>
+            
+            <div class="form-group">
+                <label for="fileFormat">File Format</label>
+                <select id="fileFormat" name="fileFormat">
+                    <option value="PDF">PDF</option>
+                    <option value="EPUB">EPUB</option>
+                    <option value="MOBI">MOBI</option>
+                    <option value="AZW">AZW (Kindle)</option>
+                    <option value="TXT">TXT</option>
+                    <option value="DOC">DOC/DOCX</option>
+                    <option value="Other">Other</option required>
+                    
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group full-width">
+                <div class="file-input-container">
+                    <span class="file-input-label">Upload Book Cover</span>
+                    <span class="file-input-help">JPG, PNG or GIF. Max size 2MB</span>
+                    <input type="file" class="file-input" id="coverImage" name="coverImage" accept="image/*">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group full-width">
+                <div class="file-input-container">
+                    <span class="file-input-label">Upload eBook File</span>
+                    <span class="file-input-help">PDF, EPUB, MOBI, etc. Max size 50MB</span>
+                    <input type="file" class="file-input" id="bookFile" name="bookFile">
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Set animation delays dynamically
+                const navItems = document.querySelectorAll('.text');
+                navItems.forEach((item, index) => {
+                    item.style.animationDelay = `${0.1 + index * 0.1}s`;
+                });
+                
+                // Hover effect that moves the active indicator
+                const activeIndicator = document.querySelector('.active-indicator');
+                const navContainer = document.querySelector('.nav-container');
+                
+                // Set initial indicator position on first item
+                if (navItems.length > 0 && activeIndicator) {
+                    const firstItem = navItems[0];
+                    firstItem.classList.add('active');
+                    
+                    // Position the indicator
+                    activeIndicator.style.width = `${firstItem.offsetWidth}px`;
+                    activeIndicator.style.left = `${firstItem.offsetLeft}px`;
+                }
+                
+                navItems.forEach(item => {
+                    item.addEventListener('mouseenter', function() {
+                        // Remove active class from all items
+                        navItems.forEach(navItem => {
+                            navItem.classList.remove('active');
+                        });
+                        
+                        // Add active class to current item
+                        this.classList.add('active');
+                        
+                        // Move the indicator
+                        activeIndicator.style.width = `${this.offsetWidth}px`;
+                        activeIndicator.style.left = `${this.offsetLeft}px`;
+                    });
+                });
+                
+                // Reset active indicator when mouse leaves the nav container
+                navContainer.addEventListener('mouseleave', function() {
+                    // Find the first item with active class
+                    const activeItem = document.querySelector('.text.active');
+                    if (activeItem) {
+                        activeIndicator.style.width = `${activeItem.offsetWidth}px`;
+                        activeIndicator.style.left = `${activeItem.offsetLeft}px`;
+                    }
+                });
+                
+                // Make header change on scroll
+                const header = document.querySelector('.header');
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 50) {
+                        header.style.padding = '10px 40px';
+                        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+                    } else {
+                        header.style.padding = '20px 40px';
+                        header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                    }
+                });
+                
+                // Mobile menu toggle
+                const burger = document.querySelector('.burger');
+                burger.addEventListener('click', function() {
+                    const nav = document.querySelector('.nav-container');
+                    nav.classList.toggle('active');
+                    burger.classList.toggle('toggle');
+                    
+                    // Animate nav items when menu opens
+                    if (nav.classList.contains('active')) {
+                        navItems.forEach((item, index) => {
+                            item.style.animation = `fadeIn 0.5s forwards ${0.3 + index * 0.1}s`;
+                        });
+                    } else {
+                        navItems.forEach(item => {
+                            item.style.animation = '';
+                        });
+                    }
+                });
+            });
+        </script>
+        <div class="btn-container">
+            <button type="button" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Book</button>
+        </div>
+    </form>
+    <footer class="footer">
+        <p>&copy; 2025 eBook Library. All rights reserved.</p>
+    </footer>
+</body>
+</html>
